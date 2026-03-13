@@ -3,7 +3,7 @@ export function AboutPage() {
   return (
     <>
       <section className="hero" style={{ padding: "60px 5% 40px" }}>
-        <h1 style={{ fontSize: "42px" }}>About Zerodha</h1>
+        <h1 style={{ fontSize: "clamp(26px, 5vw, 42px)" }}>About Zerodha</h1>
         <p>We broke the myth that brokerage has to be expensive. Built by traders, for traders.</p>
       </section>
       <section className="section">
@@ -41,13 +41,13 @@ export function ProductPage() {
   return (
     <>
       <section className="hero" style={{ padding: "60px 5% 40px" }}>
-        <h1 style={{ fontSize: "42px" }}>Our products</h1>
+        <h1 style={{ fontSize: "clamp(26px, 5vw, 42px)" }}>Our products</h1>
         <p>Everything you need to invest, trade, learn, and grow — all under one roof.</p>
       </section>
       <section className="section">
         <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gap: 24 }}>
           {products.map((p) => (
-            <div key={p.name} style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 14, padding: "28px 32px", display: "flex", gap: 24, alignItems: "flex-start" }}>
+            <div key={p.name} style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 14, padding: "28px 32px", display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
               <div style={{ fontSize: 48, lineHeight: 1 }}>{p.emoji}</div>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
@@ -69,7 +69,7 @@ export function PricingPage() {
   return (
     <>
       <section className="hero" style={{ padding: "60px 5% 40px" }}>
-        <h1 style={{ fontSize: "42px" }}>Unbeatable pricing</h1>
+        <h1 style={{ fontSize: "clamp(26px, 5vw, 42px)" }}>Unbeatable pricing</h1>
         <p>Flat fees and no hidden charges. The most transparent pricing in the industry.</p>
       </section>
       <section className="section">
@@ -107,7 +107,7 @@ export function SupportPage() {
   return (
     <>
       <section className="hero" style={{ padding: "60px 5% 40px" }}>
-        <h1 style={{ fontSize: "42px" }}>Support</h1>
+        <h1 style={{ fontSize: "clamp(26px, 5vw, 42px)" }}>Support</h1>
         <p>We're here to help. Browse our FAQs or raise a ticket.</p>
       </section>
       <section className="section" style={{ maxWidth: 760, margin: "0 auto" }}>

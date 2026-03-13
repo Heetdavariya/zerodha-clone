@@ -44,8 +44,8 @@ export default function Positions() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700 }}>Positions ({positions.length})</h2>
+      <div className="page-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
+        <h2 style={{ fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 700 }}>Positions ({positions.length})</h2>
         {positions.length > 0 && (
           <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>
             Total P&amp;L: <span style={{ fontWeight: 700, color: totalPnl >= 0 ? "var(--zerodha-green)" : "var(--zerodha-red)" }}>
@@ -63,7 +63,7 @@ export default function Positions() {
       ) : (
         <div className="card">
           <div className="table-wrap">
-            <table style={{ tableLayout: "fixed" }}>
+            <table style={{ tableLayout: "fixed", minWidth: 600 }}>
               <thead>
                 <tr>
                   <th style={{ width: 80 }}>Product</th>

@@ -12,7 +12,7 @@ function PriceRangeBar({ price }) {
   const color = pct < 33 ? "#ef4444" : pct < 66 ? "#f59e0b" : "#22c55e";
 
   return (
-    <div style={{ minWidth: 130 }}>
+    <div style={{ minWidth: 110 }}>
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "var(--text-muted)", marginBottom: 3 }}>
         <span>₹{low.toLocaleString("en-IN")}</span>
         <span>₹{high.toLocaleString("en-IN")}</span>
@@ -46,7 +46,6 @@ export default function Markets() {
     }).catch(() => {});
   }, [refreshCount]);
 
-  // Merge live prices + trigger flash animations
   useEffect(() => {
     if (!prices || Object.keys(prices).length === 0) return;
     const newFlashes = {};
@@ -125,14 +124,15 @@ export default function Markets() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+      {/* Header */}
+      <div className="markets-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, gap: 12 }}>
         <div>
-          <h2 style={{ fontSize: 22, fontWeight: 700, margin: 0 }}>Market Watch</h2>
-          <p style={{ color: "var(--text-muted)", fontSize: 13, marginTop: 4 }}>
-            {NSE_STOCKS.length} NSE listed stocks · Buy, Sell or add to Watchlist
+          <h2 style={{ fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 700, margin: 0 }}>Market Watch</h2>
+          <p style={{ color: "var(--text-muted)", fontSize: 12, marginTop: 3 }}>
+            {NSE_STOCKS.length} NSE stocks · Buy, Sell or Watch
           </p>
         </div>
-        <div style={{ position: "relative", width: 260 }}>
+        <div style={{ position: "relative", width: "100%", maxWidth: 260 }}>
           <i className="fa fa-search" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", fontSize: 13 }} />
           <input
             className="form-control"
@@ -145,36 +145,36 @@ export default function Markets() {
       </div>
 
       {/* Stats bar */}
-      <div style={{ display: "flex", gap: 16, marginBottom: 20 }}>
+      <div className="markets-stats" style={{ display: "flex", gap: 10, marginBottom: 16 }}>
         {[
           { label: "Total stocks", value: NSE_STOCKS.length, color: "var(--zerodha-blue)" },
           { label: "Gainers", value: NSE_STOCKS.filter((s) => !getLiveData(s).isDown).length, color: "var(--zerodha-green)" },
           { label: "Losers", value: NSE_STOCKS.filter((s) => getLiveData(s).isDown).length, color: "var(--zerodha-red)" },
-          { label: "In your watchlist", value: watchlist.length, color: "#9b59b6" },
+          { label: "Watchlist", value: watchlist.length, color: "#9b59b6" },
         ].map((s) => (
-          <div key={s.label} style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", padding: "12px 20px", flex: 1, textAlign: "center" }}>
-            <div style={{ fontSize: 22, fontWeight: 700, color: s.color }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 2 }}>{s.label}</div>
+          <div key={s.label} style={{ background: "#fff", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", padding: "10px 14px", flex: 1, textAlign: "center", minWidth: 0 }}>
+            <div style={{ fontSize: "clamp(16px, 3vw, 22px)", fontWeight: 700, color: s.color }}>{s.value}</div>
+            <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{s.label}</div>
           </div>
         ))}
       </div>
 
       <div className="card">
         <div className="table-wrap">
-          <table style={{ tableLayout: "fixed" }}>
+          <table style={{ tableLayout: "fixed", minWidth: 620 }}>
             <thead>
               <tr>
-                <th style={{ cursor: "pointer", width: 120 }} onClick={() => toggleSort("symbol")}>
+                <th style={{ cursor: "pointer", width: 100 }} onClick={() => toggleSort("symbol")}>
                   Symbol <SortIcon col="symbol" />
                 </th>
-                <th style={{ width: "auto" }}>Company name</th>
-                <th style={{ width: 80 }}>Exchange</th>
-                <th style={{ cursor: "pointer", width: 150, minWidth: 150 }} onClick={() => toggleSort("price")}>
+                <th style={{ width: "auto", minWidth: 120 }}>Company</th>
+                <th style={{ width: 70 }}>Exch</th>
+                <th style={{ cursor: "pointer", width: 120 }} onClick={() => toggleSort("price")}>
                   Price <SortIcon col="price" />
                 </th>
-                <th style={{ width: 100 }}>Change</th>
-                <th style={{ width: 180 }}>52W Range</th>
-                <th style={{ width: 200 }}>Actions</th>
+                <th style={{ width: 80 }}>Chg%</th>
+                <th style={{ width: 160 }} className="hide-sm">52W Range</th>
+                <th style={{ width: 180 }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -197,47 +197,48 @@ export default function Markets() {
                     }}
                   >
                     <td>
-                      <span style={{ fontWeight: 700, fontSize: 14, color: "var(--zerodha-blue)" }}>{stock.symbol}</span>
+                      <span style={{ fontWeight: 700, fontSize: 13, color: "var(--zerodha-blue)" }}>{stock.symbol}</span>
                     </td>
-                    <td style={{ fontSize: 13, color: "var(--text-secondary)" }}>{stock.name}</td>
+                    <td style={{ fontSize: 12, color: "var(--text-secondary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{stock.name}</td>
                     <td>
-                      <span style={{ fontSize: 11, background: "#e8f0fe", color: "#1a56db", padding: "2px 8px", borderRadius: 20, fontWeight: 600 }}>
+                      <span style={{ fontSize: 10, background: "#e8f0fe", color: "#1a56db", padding: "2px 6px", borderRadius: 20, fontWeight: 600 }}>
                         {stock.exchange}
                       </span>
                     </td>
-                    <td style={{ fontWeight: 700, fontSize: 15, transition: "color 0.3s", color: flash === "up" ? "var(--zerodha-green)" : flash === "down" ? "var(--zerodha-red)" : "inherit" }}>
+                    <td style={{ fontWeight: 700, fontSize: 13, transition: "color 0.3s", color: flash === "up" ? "var(--zerodha-green)" : flash === "down" ? "var(--zerodha-red)" : "inherit" }}>
                       ₹{price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                      {flash && <span style={{ marginLeft: 4, fontSize: 11 }}>{flash === "up" ? "▲" : "▼"}</span>}
+                      {flash && <span style={{ marginLeft: 3, fontSize: 10 }}>{flash === "up" ? "▲" : "▼"}</span>}
                     </td>
                     <td>
-                      <span style={{ color: isDown ? "var(--zerodha-red)" : "var(--zerodha-green)", fontWeight: 600, fontSize: 13 }}>
+                      <span style={{ color: isDown ? "var(--zerodha-red)" : "var(--zerodha-green)", fontWeight: 600, fontSize: 12 }}>
                         {pct}
                       </span>
                     </td>
-                    <td>
+                    <td className="hide-sm">
                       <PriceRangeBar price={price} />
                     </td>
                     <td>
-                      <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                        <button className="btn btn-sm btn-primary" onClick={() => openBuyWindow(stock.symbol)} style={{ padding: "5px 12px", fontSize: 12 }}>Buy</button>
-                        <button className="btn btn-sm btn-danger" onClick={() => openSellWindow(stock.symbol)} style={{ padding: "5px 12px", fontSize: 12 }}>Sell</button>
+                      <div style={{ display: "flex", gap: 4, alignItems: "center", flexWrap: "nowrap" }}>
+                        <button className="btn btn-sm btn-primary" onClick={() => openBuyWindow(stock.symbol)} style={{ padding: "4px 10px", fontSize: 12 }}>B</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => openSellWindow(stock.symbol)} style={{ padding: "4px 10px", fontSize: 12 }}>S</button>
                         <button
                           className="btn btn-sm"
                           onClick={() => !alreadyAdded && addToWatchlist(stock)}
                           disabled={alreadyAdded || adding === stock.symbol}
                           style={{
-                            padding: "5px 10px", fontSize: 12,
+                            padding: "4px 8px", fontSize: 11,
                             background: alreadyAdded ? "#f0fdf4" : "#fff",
                             color: alreadyAdded ? "var(--zerodha-green)" : "var(--text-muted)",
                             border: `1px solid ${alreadyAdded ? "var(--zerodha-green)" : "var(--border)"}`,
                             borderRadius: "var(--radius-sm)",
                             cursor: alreadyAdded ? "default" : "pointer",
+                            whiteSpace: "nowrap",
                           }}
                         >
                           {adding === stock.symbol
                             ? <i className="fa fa-spinner fa-spin" />
                             : alreadyAdded
-                            ? <><i className="fa fa-check" /> Watching</>
+                            ? <><i className="fa fa-check" /></>
                             : <><i className="fa fa-plus" /> Watch</>
                           }
                         </button>

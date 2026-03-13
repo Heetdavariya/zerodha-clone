@@ -56,7 +56,7 @@ export default function SellActionWindow({ stockName, onClose }) {
 
   return (
     <div className="action-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="action-window sell" style={{ borderRadius: "16px 16px 0 0", padding: 28, width: 460, background: "#fff", boxShadow: "0 -4px 30px rgba(0,0,0,0.15)" }}>
+      <div className="action-window sell" style={{ borderRadius: "16px 16px 0 0", padding: 28, background: "#fff", boxShadow: "0 -4px 30px rgba(0,0,0,0.15)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
           <h3 style={{ color: "var(--zerodha-red)", margin: 0 }}>
             Sell {form.name && <span style={{ fontWeight: 400, fontSize: 16 }}>— {form.name}</span>}

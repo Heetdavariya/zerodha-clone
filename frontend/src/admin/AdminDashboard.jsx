@@ -82,7 +82,7 @@ export default function AdminDashboard() {
           ))}
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
           {/* User registrations chart */}
           <div className="card">
             <div className="card-header"><span className="card-title">User registrations — last 7 days</span></div>

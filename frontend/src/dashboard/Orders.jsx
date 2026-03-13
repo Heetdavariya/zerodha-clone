@@ -28,8 +28,8 @@ export default function Orders() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700 }}>Orders ({orders.length})</h2>
+      <div className="orders-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
+        <h2 style={{ fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 700 }}>Orders ({orders.length})</h2>
         <div style={{ display: "flex", gap: 8 }}>
           {["ALL", "BUY", "SELL"].map((f) => (
             <button key={f} className={`btn btn-sm ${filter === f ? "btn-primary" : "btn-outline"}`} onClick={() => setFilter(f)}>{f}</button>
@@ -46,7 +46,7 @@ export default function Orders() {
       ) : (
         <div className="card">
           <div className="table-wrap">
-            <table>
+            <table style={{ minWidth: 640 }}>
               <thead>
                 <tr>
                   <th>Time</th>

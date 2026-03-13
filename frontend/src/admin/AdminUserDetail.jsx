@@ -55,7 +55,7 @@ export default function AdminUserDetail() {
           </div>
         )}
 
-        <div style={{ display: "grid", gridTemplateColumns: "340px 1fr", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
           {/* Left: user info */}
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div className="card">

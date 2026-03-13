@@ -45,7 +45,7 @@ export default function HomePage() {
 
       {/* CTA */}
       <section className="section section-center" style={{ background: "linear-gradient(135deg, #387ed1 0%, #1e3a8a 100%)", color: "#fff", padding: "80px 5%" }}>
-        <h2 style={{ fontSize: "36px", fontWeight: 700, marginBottom: 16 }}>Ready to start?</h2>
+        <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 700, marginBottom: 16 }}>Ready to start?</h2>
         <p style={{ fontSize: "18px", opacity: 0.85, marginBottom: 36 }}>Open a free account in under 10 minutes.</p>
         <Link to="/signup" className="btn btn-lg" style={{ background: "#fff", color: "#387ed1", fontWeight: 700 }}>
           Open free account

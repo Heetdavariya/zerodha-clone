@@ -14,18 +14,13 @@ export default function Summary() {
   const [loading, setLoading] = useState(true);
   const { prices } = useLivePrices();
   const prevPrices = useRef({});
-  const load = () => {
-    api.get("/dashboard/summary")
-      .then(({ res }) => setData(res))
-      .finally(() => setLoading(false));
-  };
 
   useEffect(() => {
     api.get("/dashboard/summary")
       .then(({ data }) => setData(data))
       .finally(() => setLoading(false));
   }, [refreshCount]);
-  // Live price → update currentValue + P&L in real time
+
   useEffect(() => {
     if (!prices || Object.keys(prices).length === 0) return;
     setData((prev) => {
@@ -78,7 +73,7 @@ export default function Summary() {
 
   return (
     <div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 24 }}>Portfolio overview</h2>
+      <h2 style={{ fontSize: "clamp(18px, 4vw, 22px)", fontWeight: 700, marginBottom: 20 }}>Portfolio overview</h2>
 
       {/* Stat cards */}
       <div className="stat-cards">
@@ -110,8 +105,8 @@ export default function Summary() {
         </div>
       </div>
 
-      {/* Chart row */}
-      <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 20, marginBottom: 20 }}>
+      {/* Chart row — responsive via CSS class */}
+      <div className="summary-chart-row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16, marginBottom: 16 }}>
 
         {/* Donut Chart */}
         <div className="card">
@@ -124,16 +119,16 @@ export default function Summary() {
               </div>
             ) : (
               <>
-                <div style={{ position: "relative", width: 170, height: 170 }}>
+                <div style={{ position: "relative", width: 160, height: 160 }}>
                   <Doughnut data={donutData} options={donutOptions} />
                   <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", textAlign: "center", pointerEvents: "none" }}>
-                    <div style={{ fontSize: 11, color: "var(--text-muted)" }}>Total</div>
-                    <div style={{ fontSize: 14, fontWeight: 700 }}>
+                    <div style={{ fontSize: 10, color: "var(--text-muted)" }}>Total</div>
+                    <div style={{ fontSize: 13, fontWeight: 700 }}>
                       ₹{(funds + invested).toLocaleString("en-IN", { notation: "compact", maximumFractionDigits: 1 })}
                     </div>
                   </div>
                 </div>
-                <div style={{ marginTop: 16, width: "100%" }}>
+                <div style={{ marginTop: 14, width: "100%" }}>
                   {[
                     { label: "Available funds", value: funds, color: "#387ed1" },
                     { label: "Invested", value: invested, color: "#f59e0b" },
@@ -163,7 +158,7 @@ export default function Summary() {
             {!data?.recentOrders?.length ? (
               <p style={{ padding: 20, color: "var(--text-muted)", fontSize: 14 }}>No orders yet.</p>
             ) : data.recentOrders.map((o) => (
-              <div key={o._id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 20px", borderBottom: "1px solid var(--border)" }}>
+              <div key={o._id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
                 <div>
                   <div style={{ fontWeight: 600, fontSize: 13 }}>{o.name}</div>
                   <div style={{ fontSize: 11, color: "var(--text-muted)" }}>{o.qty} shares · ₹{o.price}</div>
@@ -179,7 +174,7 @@ export default function Summary() {
       </div>
 
       {/* Holdings + Positions */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+      <div className="summary-bottom-row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
         <div className="card">
           <div className="card-header">
             <span className="card-title">Holdings ({data?.holdingsCount || 0})</span>

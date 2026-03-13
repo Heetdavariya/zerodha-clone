@@ -1,9 +1,19 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = sidebarOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [sidebarOpen]);
 
   const navItems = [
     { to: "/admin", icon: "fa-tachometer-alt", label: "Dashboard", end: true },
@@ -15,11 +25,22 @@ export default function AdminLayout() {
 
   return (
     <div className="admin-layout">
+      {/* Overlay */}
+      <div
+        className={`sidebar-overlay${sidebarOpen ? " open" : ""}`}
+        onClick={() => setSidebarOpen(false)}
+      />
+
       {/* Sidebar */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar${sidebarOpen ? " open" : ""}`}>
         <div className="admin-sidebar-header">
-          <div className="admin-sidebar-logo">Zerodha <span>Admin</span></div>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>Management Console</div>
+          <div>
+            <div className="admin-sidebar-logo">Zerodha <span>Admin</span></div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>Management Console</div>
+          </div>
+          <button className="admin-sidebar-close" onClick={() => setSidebarOpen(false)}>
+            <i className="fa fa-times" />
+          </button>
         </div>
         <nav className="admin-nav">
           <div className="nav-section">Main</div>
@@ -54,6 +75,19 @@ export default function AdminLayout() {
 
       {/* Main */}
       <main className="admin-main">
+        {/* Admin topbar with hamburger */}
+        <div className="admin-topbar">
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button className="admin-menu-btn" onClick={() => setSidebarOpen(true)}>
+              <i className="fa fa-bars" />
+            </button>
+            <h1>Admin Panel</h1>
+          </div>
+          <div style={{ fontSize: 13, color: "var(--text-muted)" }}>
+            <i className="fa fa-user-shield" style={{ marginRight: 6 }} />
+            {user?.name}
+          </div>
+        </div>
         <Outlet />
       </main>
     </div>

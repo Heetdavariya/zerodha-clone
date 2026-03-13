@@ -86,8 +86,8 @@ export default function Holdings() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700 }}>Holdings ({holdings.length})</h2>
+      <div className="page-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
+        <h2 style={{ fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 700 }}>Holdings ({holdings.length})</h2>
         <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>
           P&amp;L: <span style={{ fontWeight: 700, color: totalPnl >= 0 ? "var(--zerodha-green)" : "var(--zerodha-red)" }}>
             {totalPnl >= 0 ? "+" : ""}₹{totalPnl.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
@@ -121,7 +121,7 @@ export default function Holdings() {
           {/* Table */}
           <div className="card">
             <div className="table-wrap">
-              <table style={{ tableLayout: "fixed" }}>
+              <table style={{ tableLayout: "fixed", minWidth: 700 }}>
                 <thead>
                   <tr>
                     <th style={{ width: 110 }}>Stock</th>
@@ -176,7 +176,7 @@ export default function Holdings() {
                 </tbody>
               </table>
             </div>
-            <div style={{ padding: "14px 22px", borderTop: "1px solid var(--border)", display: "flex", gap: 40, fontSize: 14 }}>
+            <div style={{ padding: "12px 16px", borderTop: "1px solid var(--border)", display: "flex", gap: 16, fontSize: 13, flexWrap: "wrap" }}>
               <span>Invested: <strong>₹{totalInvested.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</strong></span>
               <span>Current: <strong>₹{totalCurrent.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</strong></span>
               <span>P&amp;L: <strong className={totalPnl >= 0 ? "gain" : "loss"}>{totalPnl >= 0 ? "+" : ""}₹{totalPnl.toFixed(2)}</strong></span>
