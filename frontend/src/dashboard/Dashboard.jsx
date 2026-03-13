@@ -12,6 +12,7 @@ import Profile from "./Profile";
 import Markets from "./Markets";
 import BuyActionWindow from "./BuyActionWindow";
 import SellActionWindow from "./SellActionWindow";
+import AIChatbot from "./AIChatbot"; 
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -134,6 +135,7 @@ export default function Dashboard() {
 
       {isBuyWindowOpen && <BuyActionWindow stockName={selectedStock} onClose={closeBuyWindow} />}
       {isSellWindowOpen && <SellActionWindow stockName={selectedStock} onClose={closeSellWindow} />}
+      <AIChatbot />
     </div>
   );
 }

@@ -117,6 +117,7 @@ app.use(express.json());
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/dashboard", require("./routes/dashboard"));
 app.use("/api/admin", require("./routes/admin"));
+app.use("/api/ai", require("./routes/ai")); 
 
 app.get("/api/health", (req, res) => res.json({ status: "ok", time: new Date() }));
 
