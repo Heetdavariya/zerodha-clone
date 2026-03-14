@@ -1,5 +1,6 @@
-import { useContext, useState, useEffect } from "react";
-import { NavLink, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+// frontend/src/dashboard/Dashboard.jsx
+import { useContext, useState } from "react";
+import { NavLink, Routes, Route, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import GeneralContext from "../context/GeneralContext";
 import WatchList from "./WatchList";
@@ -12,64 +13,51 @@ import Profile from "./Profile";
 import Markets from "./Markets";
 import BuyActionWindow from "./BuyActionWindow";
 import SellActionWindow from "./SellActionWindow";
-import AIChatbot from "./AIChatbot"; 
+import AIChatbot from "./AIChatbot";
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const { isBuyWindowOpen, closeBuyWindow, isSellWindowOpen, closeSellWindow, selectedStock } = useContext(GeneralContext);
   const navigate = useNavigate();
-  const location = useLocation();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Close sidebar on route change (mobile)
-  useEffect(() => {
-    setSidebarOpen(false);
-  }, [location.pathname]);
+  const handleBuyClose = (tradeData) => {
+    closeBuyWindow(!!tradeData);
+  };
 
-  // Prevent body scroll when sidebar open on mobile
-  useEffect(() => {
-    if (sidebarOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [sidebarOpen]);
+  const handleSellClose = (tradeData) => {
+    closeSellWindow(!!tradeData);
+  };
 
   const navItems = [
-    { to: "/dashboard", icon: "fa-home", label: "Summary", end: true },
-    { to: "/dashboard/orders", icon: "fa-list-alt", label: "Orders" },
-    { to: "/dashboard/holdings", icon: "fa-briefcase", label: "Holdings" },
-    { to: "/dashboard/positions", icon: "fa-exchange-alt", label: "Positions" },
-    { to: "/dashboard/markets", icon: "fa-chart-line", label: "Markets" },
-    { to: "/dashboard/funds", icon: "fa-rupee-sign", label: "Funds" },
-    { to: "/dashboard/profile", icon: "fa-user", label: "Profile" },
+    { to: "/dashboard",           icon: "fa-home",         label: "Summary",  end: true },
+    { to: "/dashboard/orders",    icon: "fa-list-alt",     label: "Orders"             },
+    { to: "/dashboard/holdings",  icon: "fa-briefcase",    label: "Holdings"           },
+    { to: "/dashboard/positions", icon: "fa-exchange-alt", label: "Positions"          },
+    { to: "/dashboard/markets",   icon: "fa-chart-line",   label: "Markets"            },
+    { to: "/dashboard/funds",     icon: "fa-rupee-sign",   label: "Funds"              },
+    { to: "/dashboard/profile",   icon: "fa-user",         label: "Profile"            },
   ];
 
   const initials = user?.name?.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 
-  // Get current page title
-  const pageTitle = navItems.find(item =>
-    item.end
-      ? location.pathname === item.to
-      : location.pathname.startsWith(item.to)
-  )?.label || "Dashboard";
+  const closeSidebar = () => setSidebarOpen(false);
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar overlay for mobile */}
+      {/* Sidebar overlay (mobile) */}
       <div
         className={`sidebar-overlay${sidebarOpen ? " open" : ""}`}
-        onClick={() => setSidebarOpen(false)}
+        onClick={closeSidebar}
       />
 
       {/* Sidebar */}
       <aside className={`dashboard-sidebar${sidebarOpen ? " open" : ""}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">Zerodha Kite</div>
-          <button className="sidebar-close" onClick={() => setSidebarOpen(false)}>
-            <i className="fa fa-times" />
-          </button>
+          {/* X button — only visible on mobile */}
+          <button className="sidebar-close" onClick={closeSidebar} aria-label="Close menu">✕</button>
         </div>
         <nav className="sidebar-nav">
           {navItems.map((item) => (
@@ -78,6 +66,7 @@ export default function Dashboard() {
               to={item.to}
               end={item.end}
               className={({ isActive }) => isActive ? "active" : ""}
+              onClick={closeSidebar}
             >
               <i className={`fa ${item.icon}`} />{item.label}
             </NavLink>
@@ -97,44 +86,44 @@ export default function Dashboard() {
         </div>
       </aside>
 
-      {/* Main content with watchlist */}
-      <div style={{ flex: 1, display: "flex", overflow: "hidden", minWidth: 0 }}>
-        <WatchList />
-        <div className="dashboard-main">
-          {/* Topbar with hamburger */}
-          <div className="dashboard-topbar">
-            <div className="topbar-left">
-              <button
-                className="topbar-menu-btn"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open menu"
-              >
-                <i className="fa fa-bars" />
-              </button>
-              <span className="topbar-title">{pageTitle}</span>
-            </div>
-            <div className="topbar-funds">
-              <span className="label">Funds:</span>
-              <span className="amount" id="topbar-funds-display">—</span>
-            </div>
+      {/* Main area */}
+      <div style={{ flex: 1, display: "flex", overflow: "hidden", flexDirection: "column" }}>
+        {/* Mobile-only topbar with hamburger — hidden on desktop via CSS */}
+        <div className="dashboard-topbar">
+          <div className="topbar-left">
+            <button
+              className="topbar-menu-btn"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
+            >
+              <i className="fa fa-bars" />
+            </button>
+            <span className="topbar-title">Zerodha Kite</span>
           </div>
+        </div>
 
-          <div className="dashboard-content">
-            <Routes>
-              <Route index element={<Summary />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="holdings" element={<Holdings />} />
-              <Route path="positions" element={<Positions />} />
-              <Route path="markets" element={<Markets />} />
-              <Route path="funds" element={<Funds />} />
-              <Route path="profile" element={<Profile />} />
-            </Routes>
+        <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+          <WatchList />
+          <div className="dashboard-main">
+            <div className="dashboard-content">
+              <Routes>
+                <Route index            element={<Summary />}   />
+                <Route path="orders"    element={<Orders />}    />
+                <Route path="holdings"  element={<Holdings />}  />
+                <Route path="positions" element={<Positions />} />
+                <Route path="markets"   element={<Markets />}   />
+                <Route path="funds"     element={<Funds />}     />
+                <Route path="profile"   element={<Profile />}   />
+              </Routes>
+            </div>
           </div>
         </div>
       </div>
 
-      {isBuyWindowOpen && <BuyActionWindow stockName={selectedStock} onClose={closeBuyWindow} />}
-      {isSellWindowOpen && <SellActionWindow stockName={selectedStock} onClose={closeSellWindow} />}
+      {isBuyWindowOpen  && <BuyActionWindow  stockName={selectedStock} onClose={handleBuyClose}  />}
+      {isSellWindowOpen && <SellActionWindow stockName={selectedStock} onClose={handleSellClose} />}
+
+
       <AIChatbot />
     </div>
   );

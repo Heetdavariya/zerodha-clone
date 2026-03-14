@@ -121,7 +121,7 @@ export default function Holdings() {
           {/* Table */}
           <div className="card">
             <div className="table-wrap">
-              <table style={{ tableLayout: "fixed", minWidth: 700 }}>
+              <table style={{ minWidth: 720 }}>
                 <thead>
                   <tr>
                     <th style={{ width: 110 }}>Stock</th>
@@ -163,7 +163,10 @@ export default function Holdings() {
                           {pnl >= 0 ? "+" : ""}₹{Math.abs(pnl).toFixed(2)}<br />
                           <span style={{ fontSize: 11, fontWeight: 400 }}>({pnlPct}%)</span>
                         </td>
-                        <td className={h.isLoss ? "loss" : "gain"}>{h.day}</td>
+                        <td className={((h.price - h.avg) / h.avg * 100) >= 0 ? "gain" : "loss"} style={{ whiteSpace: "nowrap" }}>
+                          {((h.price - h.avg) / h.avg * 100) >= 0 ? "+" : ""}
+                          {((h.price - h.avg) / h.avg * 100).toFixed(2)}%
+                        </td>
                         <td>
                           <div style={{ display: "flex", gap: 6 }}>
                             <button className="btn btn-sm btn-primary" onClick={() => openBuyWindow(h.name)}>Buy</button>

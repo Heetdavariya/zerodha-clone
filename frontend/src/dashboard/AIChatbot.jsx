@@ -309,12 +309,41 @@ export default function AIChatbot() {
         .ai-quick-btn:hover { background: #387ed1 !important; color: #fff !important; border-color: #387ed1 !important; }
         .ai-clear-btn:hover { background: #fff5f5 !important; color: #e74c3c !important; }
         .ai-input:focus { border-color: #387ed1 !important; box-shadow: 0 0 0 3px rgba(56,126,209,0.1) !important; }
+        /* ── Responsive chat window ── */
+        @media (max-width: 480px) {
+          .ai-chat-window {
+            bottom: 0 !important;
+            right: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            border-radius: 18px 18px 0 0 !important;
+            height: 88vh !important;
+          }
+          .ai-trigger-btn {
+            bottom: 16px !important;
+            right: 16px !important;
+          }
+        }
+        @media (min-width: 481px) and (max-width: 768px) {
+          .ai-chat-window {
+            width: calc(100vw - 32px) !important;
+            max-width: 420px !important;
+            right: 16px !important;
+            bottom: 16px !important;
+          }
+          .ai-trigger-btn {
+            bottom: 16px !important;
+            right: 16px !important;
+          }
+        }
       `}</style>
 
       {/* ── Floating trigger button ── */}
       {!isOpen && (
         <button
           onClick={handleOpen}
+          className="ai-trigger-btn"
           title="Open Kite AI"
           style={{
             position: "fixed",
@@ -367,6 +396,7 @@ export default function AIChatbot() {
       {/* ── Chat window ── */}
       {isOpen && (
         <div
+          className="ai-chat-window"
           style={{
             position: "fixed",
             bottom: 28,

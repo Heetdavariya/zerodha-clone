@@ -1,3 +1,4 @@
+// frontend/src/dashboard/Funds.jsx
 import { useEffect, useState } from "react";
 import api from "../utils/api";
 
@@ -32,17 +33,20 @@ export default function Funds() {
 
   return (
     <div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 24 }}>Funds</h2>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 800 }}>
+      <h2 style={{ fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 700, marginBottom: 20 }}>Funds</h2>
+
+      {/* Use className funds-grid — responsive via CSS */}
+      <div className="funds-grid">
+
         {/* Balance card */}
         <div className="card">
           <div className="card-header"><span className="card-title">Available balance</span></div>
-          <div className="card-body" style={{ textAlign: "center", padding: "36px 22px" }}>
-            <div style={{ fontSize: 42, fontWeight: 700, color: "var(--zerodha-blue)" }}>
+          <div className="card-body" style={{ textAlign: "center", padding: "28px 20px" }}>
+            <div style={{ fontSize: "clamp(28px, 8vw, 42px)", fontWeight: 700, color: "var(--zerodha-blue)" }}>
               ₹{funds.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </div>
-            <p style={{ color: "var(--text-muted)", marginTop: 10, fontSize: 14 }}>Available for trading</p>
-            <div style={{ marginTop: 24, padding: "14px", background: "var(--bg-secondary)", borderRadius: "var(--radius-sm)", fontSize: 13 }}>
+            <p style={{ color: "var(--text-muted)", marginTop: 8, fontSize: 14 }}>Available for trading</p>
+            <div style={{ marginTop: 20, padding: 14, background: "var(--bg-secondary)", borderRadius: "var(--radius-sm)", fontSize: 13 }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                 <span style={{ color: "var(--text-muted)" }}>Equity</span>
                 <span style={{ fontWeight: 600 }}>₹{funds.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
@@ -60,12 +64,12 @@ export default function Funds() {
           <div className="card-header"><span className="card-title">Add funds</span></div>
           <div className="card-body">
             {msg && (
-              <div className={`alert alert-${msg.type}`} style={{ marginBottom: 16 }}>
+              <div className={`alert alert-${msg.type}`} style={{ marginBottom: 14 }}>
                 <i className={`fa fa-${msg.type === "success" ? "check-circle" : "exclamation-circle"}`} />
                 {msg.text}
               </div>
             )}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 18 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
               {presets.map((p) => (
                 <button key={p} className="btn btn-outline btn-sm" onClick={() => setAmount(String(p))}>
                   ₹{p.toLocaleString("en-IN")}
@@ -88,8 +92,8 @@ export default function Funds() {
         </div>
       </div>
 
-      {/* Info */}
-      <div style={{ marginTop: 24, padding: "16px 20px", background: "#fff8e1", border: "1px solid #ffe082", borderRadius: "var(--radius-sm)", fontSize: 13, color: "#795548", maxWidth: 800 }}>
+      {/* Info note */}
+      <div style={{ marginTop: 20, padding: "14px 18px", background: "#fff8e1", border: "1px solid #ffe082", borderRadius: "var(--radius-sm)", fontSize: 13, color: "#795548" }}>
         <i className="fa fa-info-circle" style={{ marginRight: 8 }} />
         This is a paper trading platform. No real money is involved. Funds added here are virtual.
       </div>
