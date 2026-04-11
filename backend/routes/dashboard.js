@@ -151,7 +151,12 @@ router.post("/orders", verifyToken, async (req, res) => {
       status: "EXECUTED",
     });
 
-    res.status(201).json({ message: `Order ${mode} executed successfully.`, order });
+    const action = mode === "BUY" ? "Bought" : "Sold";
+    const totalAmt = (qty * price).toLocaleString("en-IN", { minimumFractionDigits: 2 });
+    res.status(201).json({
+      message: `${action} ${qty} share${qty > 1 ? "s" : ""} of ${name} @ ₹${price} — ₹${totalAmt} ${mode === "BUY" ? "debited" : "credited"}.`,
+      order
+    });
   } catch (err) {
     console.error("Order error:", err);
     res.status(500).json({ message: "Server error." });

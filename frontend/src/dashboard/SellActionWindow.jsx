@@ -45,9 +45,12 @@ export default function SellActionWindow({ stockName, onClose }) {
     setLoading(true); setMsg(null);
     try {
       const { data } = await api.post("/dashboard/orders", { ...form, mode: "SELL", qty: parseInt(form.qty), price: parseFloat(form.price) });
-      setMsg({ type: "success", text: data.message });
+      const qty = parseInt(form.qty);
+      const price = parseFloat(form.price);
+      const totalAmt = (qty * price).toLocaleString("en-IN", { minimumFractionDigits: 2 });
+      setMsg({ type: "success", text: `✅ Sold ${qty} share${qty > 1 ? "s" : ""} of ${form.name} @ ₹${price} — ₹${totalAmt} credited.` });
       triggerRefresh();
-      onClose(true); // signal success to close window
+      setTimeout(() => onClose(true), 2000); // show message for 2s before closing
     } catch (err) {
       setMsg({ type: "error", text: err.response?.data?.message || "Order failed." });
     } finally { setLoading(false); }
